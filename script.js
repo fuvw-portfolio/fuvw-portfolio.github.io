@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === videoModal) closeModal();
         });
     }
-
+    
     const stickyTitle = document.getElementById('sticky-title');
     const stickySubtitle = document.getElementById('sticky-subtitle');
     const contentBlocks = document.querySelectorAll('.details-scrolling-content .content-block');
@@ -121,5 +121,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { rootMargin: "-50% 0px -50% 0px" });
 
         contentBlocks.forEach(block => scrollytellingObserver.observe(block));
+    }
+
+    const visitCounters = document.querySelectorAll('.project-visits');
+    if (visitCounters.length > 0) {
+        const formatNumber = (num) => {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+            return num.toString();
+        };
+
+        const animateCount = (element, target) => {
+            let start = 0;
+            const duration = 2000;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = Math.floor(progress * target);
+                element.textContent = formatNumber(current);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    element.textContent = formatNumber(target);
+                }
+            };
+            window.requestAnimationFrame(step);
+        };
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const visitsContainer = entry.target;
+                    const countElement = visitsContainer.querySelector('.visits-count');
+                    const target = parseInt(visitsContainer.dataset.visits, 10);
+                    
+                    animateCount(countElement, target);
+                    counterObserver.unobserve(visitsContainer);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        visitCounters.forEach(counter => {
+            counterObserver.observe(counter);
+        });
     }
 });
