@@ -382,6 +382,19 @@ body {
     gap: 80px;
 }
 
+.projects-category-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-muted-foreground);
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-border);
+    margin-top: 32px;
+}
+
+.projects-category-title:first-of-type {
+    margin-top: 0;
+}
+
 .project-card {
     display: grid;
     grid-template-columns: 300px 1fr;
@@ -389,13 +402,26 @@ body {
     align-items: start;
 }
 
+.project-card.personal {
+    grid-template-columns: 1fr 1.5fr;
+    align-items: center;
+}
+
 .project-media {
     position: sticky;
     top: 120px;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
+    gap: 24px;
+}
+
+.project-card.personal .project-media {
+    flex-direction: column;
+}
+
+.project-media-header {
+    display: flex;
+    align-items: center;
     gap: 24px;
 }
 
@@ -406,6 +432,7 @@ body {
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     border: 1px solid var(--color-card-border);
+    flex-shrink: 0;
 }
 
 .project-icon img {
@@ -419,17 +446,21 @@ body {
     overflow: hidden;
     box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
     border: 1px solid var(--color-card-border);
+    aspect-ratio: 16 / 9;
 }
 
 .project-video-link {
     display: block;
     position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .project-video-container video {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
+    object-fit: cover;
 }
 
 .play-overlay {
@@ -461,11 +492,63 @@ body {
     font-weight: 500;
 }
 
+.project-gallery {
+    width: 100%;
+}
+
+.gallery-item {
+    display: none;
+}
+
+.gallery-button {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 84px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--color-card-border);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.gallery-button video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(3px);
+    transform: scale(1.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
 .project-title {
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: -0.03em;
     margin-bottom: 12px;
+}
+
+.project-card.personal .project-title {
+    font-size: 1.75rem;
 }
 
 .project-meta {
@@ -681,7 +764,6 @@ body {
     margin-bottom: 16px;
 }
 
-
 .main-footer {
     padding: 32px 0;
     border-top: 1px solid var(--color-border);
@@ -749,6 +831,8 @@ body {
     max-height: 90%;
     transform: scale(0.95);
     transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .video-modal.is-visible .modal-content {
@@ -757,11 +841,51 @@ body {
 
 #modal-video-player {
     width: 100%;
-    height: auto;
-    max-height: calc(90vh - 40px);
     border-radius: 12px;
     border: 1px solid var(--color-border);
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    flex-grow: 1;
+    min-height: 0;
+}
+
+#modal-nav {
+    padding-top: 16px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.nav-thumbnail {
+    background: var(--color-secondary);
+    border: 2px solid var(--color-border);
+    border-radius: 6px;
+    height: 60px;
+    aspect-ratio: 16/9;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-thumbnail:hover {
+    opacity: 1;
+    border-color: var(--color-muted-foreground);
+}
+
+.nav-thumbnail.is-active {
+    opacity: 1;
+    border-color: var(--color-primary);
+}
+
+.nav-thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .modal-close-btn {
@@ -788,18 +912,32 @@ body {
 
 @media (max-width: 900px) {
     .projects-grid { gap: 48px; }
-    .project-card { grid-template-columns: 1fr; gap: 24px; }
-    .project-media { position: static; flex-direction: row; align-items: center; }
-    .project-icon { width: 64px; height: 64px; flex-shrink: 0; }
-    .project-video-container { flex-grow: 1; }
-    .project-content { padding-top: 0; }
-    .project-title { font-size: 1.5rem; margin-bottom: 12px; }
-
-    .details-layout-wrapper { flex-direction: column; gap: 32px; }
-    .details-sticky-content { width: 100%; position: static; text-align: center; }
-    .details-sticky-content .section-title,
-    .details-sticky-content .section-subtitle { text-align: center; margin-left: auto; margin-right: auto; }
-    .details-scrolling-content { gap: 64px; }
+    .project-card,
+    .project-card.personal {
+        grid-template-columns: 1fr; 
+        gap: 24px; 
+    }
+    .project-media { 
+        position: static;
+        order: 1;
+    }
+    .project-content {
+        order: 2;
+    }
+    .project-icon { 
+        width: 100px; 
+        height: 100px;
+    }
+    .project-card.personal .project-media {
+        flex-direction: column;
+    }
+    .gallery-button {
+        height: 100px;
+    }
+    .project-title,
+    .project-card.personal .project-title {
+        font-size: 1.5rem; 
+    }
 }
 
 @media (max-width: 768px) {
@@ -825,9 +963,18 @@ body {
     .is-open .icon-close { display: block; }
     .hero-title { font-size: clamp(2.25rem, 10vw, 3rem); }
     .hero-subtitle { font-size: 1rem; }
-
+    .project-media-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .project-icon {
+        width: 80px;
+        height: 80px;
+    }
+    .gallery-button {
+        height: 80px;
+    }
     .modal-close-btn { top: 16px; right: 16px; background-color: rgba(0,0,0,0.5); border-radius: 50%; }
-
     .footer-container { flex-direction: column; gap: 24px; }
     .footer-left { order: 2; }
     .footer-right { order: 1; }
