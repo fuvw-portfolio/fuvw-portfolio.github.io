@@ -52,31 +52,100 @@ document.addEventListener('DOMContentLoaded', () => {
             revealObserver.observe(el);
         });
     }
+    
+    document.querySelectorAll('.project-gallery').forEach(gallery => {
+        const galleryItems = gallery.querySelectorAll('.gallery-item');
+        const galleryButton = gallery.querySelector('.gallery-button');
+        const countSpan = gallery.querySelector('.gallery-count');
+        
+        if (galleryItems.length > 1 && galleryButton && countSpan) {
+            const additionalItems = galleryItems.length - 1;
+            countSpan.textContent = `+${additionalItems} more`;
+        } else if (galleryButton) {
+            galleryButton.style.display = 'none';
+        }
+    });
 
     const videoModal = document.getElementById('video-modal');
     if (videoModal) {
         const modalVideoPlayer = document.getElementById('modal-video-player');
+        const modalNav = document.getElementById('modal-nav');
         const modalCloseBtn = document.getElementById('modal-close-btn');
-        const projectVideoLinks = document.querySelectorAll('.project-video-link');
-        const openModal = (src) => {
-            modalVideoPlayer.src = src;
+        let currentGallerySources = [];
+        
+        const switchVideo = (index) => {
+            if (currentGallerySources[index]) {
+                modalVideoPlayer.src = currentGallerySources[index];
+                modalVideoPlayer.play();
+                
+                modalNav.querySelectorAll('.nav-thumbnail').forEach((thumb, i) => {
+                    thumb.classList.toggle('is-active', i === index);
+                });
+            }
+        };
+
+        const openModal = (sources, startIndex) => {
+            currentGallerySources = sources;
+            modalNav.innerHTML = '';
+
+            if (sources.length > 1) {
+                sources.forEach((src, index) => {
+                    const thumb = document.createElement('button');
+                    thumb.classList.add('nav-thumbnail');
+                    thumb.dataset.index = index;
+                    
+                    const thumbVideo = document.createElement('video');
+                    thumbVideo.src = src;
+                    thumbVideo.muted = true;
+                    thumbVideo.playsinline = true;
+
+                    thumb.appendChild(thumbVideo);
+                    thumb.addEventListener('click', () => switchVideo(index));
+                    modalNav.appendChild(thumb);
+                });
+                modalNav.style.display = 'flex';
+            } else {
+                modalNav.style.display = 'none';
+            }
+            
             videoModal.classList.add('is-visible');
             document.body.style.overflow = 'hidden';
-            modalVideoPlayer.play();
+            switchVideo(startIndex);
         };
+
         const closeModal = () => {
             videoModal.classList.remove('is-visible');
             document.body.style.overflow = '';
             modalVideoPlayer.pause();
             modalVideoPlayer.src = '';
+            modalNav.innerHTML = '';
+            currentGallerySources = [];
         };
-        projectVideoLinks.forEach(link => {
+
+        document.querySelectorAll('.project-video-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const videoSrc = link.dataset.videoSrc;
-                if (videoSrc) openModal(videoSrc);
+                const source = [link.dataset.videoSrc];
+                openModal(source, 0);
             });
         });
+
+        document.querySelectorAll('.gallery-item').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const galleryContainer = link.closest('.project-gallery');
+                if (!galleryContainer) return;
+                
+                const galleryItems = Array.from(galleryContainer.querySelectorAll('.gallery-item'));
+                const sources = galleryItems.map(item => item.dataset.videoSrc);
+                const startIndex = galleryItems.indexOf(link);
+
+                if (sources.length > 0) {
+                    openModal(sources, startIndex);
+                }
+            });
+        });
+        
         modalCloseBtn.addEventListener('click', closeModal);
         videoModal.addEventListener('click', (e) => {
             if (e.target === videoModal) closeModal();
