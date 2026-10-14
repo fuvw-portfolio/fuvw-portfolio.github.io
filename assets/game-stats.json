@@ -1,0 +1,85 @@
+{
+  "checkedAt": "2026-10-14",
+  "sources": {
+    "games": "https://games.roblox.com/v1/games?universeIds=9512216044,7971842800,7971925380,7258947448,9610539335",
+    "votes": "https://games.roblox.com/v1/games/votes?universeIds=9512216044,7971842800,7971925380,7258947448,9610539335",
+    "peakCCU": "Provided by portfolio owner"
+  },
+  "games": [
+    {
+      "slug": "aura-speed-escape",
+      "universeId": 9512216044,
+      "placeId": 73160984129221,
+      "name": "[🔄UPD] +1 Aura Speed Escape",
+      "visits": 74317618,
+      "likes": 210054,
+      "dislikes": 10292,
+      "approval": 95.3,
+      "creator": "Speedy Fun Games",
+      "role": "Lead scripter",
+      "checkedAt": "2026-10-14",
+      "url": "https://www.roblox.com/games/73160984129221/1-Aura-Speed-Escape",
+      "peakCCU": 41000
+    },
+    {
+      "slug": "villain-tower",
+      "universeId": 7971842800,
+      "placeId": 106908627140404,
+      "name": "😈 Villain Tower [UPD]",
+      "visits": 4213618,
+      "likes": 17228,
+      "dislikes": 787,
+      "approval": 95.6,
+      "creator": "Multivers Games",
+      "role": "Lead scripter",
+      "checkedAt": "2026-10-14",
+      "url": "https://www.roblox.com/games/106908627140404/Villain-Tower",
+      "peakCCU": null
+    },
+    {
+      "slug": "heroes-tower",
+      "universeId": 7971925380,
+      "placeId": 77049491730181,
+      "name": "💥 Heroes Tower",
+      "visits": 3092625,
+      "likes": 11972,
+      "dislikes": 503,
+      "approval": 96.0,
+      "creator": "Multivers Games",
+      "role": "Lead scripter",
+      "checkedAt": "2026-10-14",
+      "url": "https://www.roblox.com/games/77049491730181/Heroes-Tower",
+      "peakCCU": null
+    },
+    {
+      "slug": "anime-infection",
+      "universeId": 7258947448,
+      "placeId": 125531727954281,
+      "name": "Anime Infection ☣️",
+      "visits": 393045,
+      "likes": 2384,
+      "dislikes": 484,
+      "approval": 83.1,
+      "creator": "Infected Games!",
+      "role": "Lead scripter",
+      "checkedAt": "2026-10-14",
+      "url": "https://www.roblox.com/games/125531727954281/Anime-Infection",
+      "peakCCU": null
+    },
+    {
+      "slug": "merge-your-zoo",
+      "universeId": 9610539335,
+      "placeId": 77032124168459,
+      "name": "[🐾] Merge Your Zoo",
+      "visits": 931011,
+      "likes": 4586,
+      "dislikes": 235,
+      "approval": 95.1,
+      "creator": "Lovely Pet Pals",
+      "role": "Lead scripter",
+      "checkedAt": "2026-10-14",
+      "url": "https://www.roblox.com/games/77032124168459/Merge-Your-Zoo",
+      "peakCCU": null
+    }
+  ]
+}
